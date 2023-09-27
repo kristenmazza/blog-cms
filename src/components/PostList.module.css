@@ -1,0 +1,17 @@
+.cardGrid {
+  display: grid;
+  gap: 2rem;
+  width: 100%;
+  margin: 2rem 0 5rem 0;
+}
+
+.skeleton {
+  flex: 1;
+  transform-origin: '0 65%';
+}
+
+@media (min-width: 900px) {
+  .cardGrid {
+    padding: 0;
+  }
+}
