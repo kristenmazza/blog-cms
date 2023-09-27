@@ -1,0 +1,11 @@
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(237, 237, 237);
+  padding: 1.5rem;
+}
+
+.copyright {
+  text-align: center;
+}
