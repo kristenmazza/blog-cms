@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 import { emphasize } from '@mui/material';
 import styles from './OptionButtons.module.css';
 import { Link } from 'react-router-dom';
+import ImageIcon from '@mui/icons-material/Image';
 
 const StyledButton = styled(Button)(({ theme }) => {
   const backgroundColor = 'rgb(251, 251, 251)';
@@ -39,6 +40,14 @@ export default function IconLabelButtons({ published, slug }) {
         to={`/edit/${slug}`}
       >
         Edit
+      </StyledButton>
+      <StyledButton
+        variant='text'
+        startIcon={<ImageIcon />}
+        component={Link}
+        to={`/edit/${slug}`}
+      >
+        New Image
       </StyledButton>
       <StyledButton variant='text' startIcon={<VisibilityIcon />}>
         View

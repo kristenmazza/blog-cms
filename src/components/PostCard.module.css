@@ -13,12 +13,13 @@
     flex: 1;
 
     .cardImage {
-      width: 100%;
+      width: 101%;
       height: 100%;
       aspect-ratio: 16 / 9;
       object-fit: cover;
       object-position: center;
       padding: 0;
+      border-radius: 0;
     }
   }
 
