@@ -1,25 +1,30 @@
-import styles from './App.module.css';
-import Header from './components/Header';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { Outlet } from 'react-router-dom';
-import Footer from './components/Footer';
-import { Box } from '@mui/material';
-
-const theme = createTheme({
-  typography: { fontFamily: 'Inter' },
-});
+import RequireAuth from './components/RequireAuth';
+import { Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Unauthorized from './pages/Unauthorized';
+import Home from './pages/Home';
+import EditPost from './pages/EditPost';
+import ErrorPage from './pages/ErrorPage';
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Header />
-      <Box className={styles.contentContainer}>
-        <Outlet />
-      </Box>
-      <Footer />
-    </ThemeProvider>
+    <Routes>
+      <Route path='/' element={<Layout />}>
+        {/* Public routes */}
+        <Route path='login' element={<Login />} />
+        <Route path='register' element={<Register />} />
+        <Route path='unauthorized' element={<Unauthorized />} />
+        {/* Protected routes */}
+        <Route element={<RequireAuth />}>
+          <Route path='/' element={<Home />} />
+          <Route path='/edit/:slug' element={<EditPost />} />
+        </Route>
+        {/* Catch all */}
+        <Route path='*' element={<ErrorPage />} />
+      </Route>
+    </Routes>
   );
 }
 

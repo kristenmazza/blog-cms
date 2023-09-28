@@ -16,6 +16,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
+import useAuth from '../hooks/useAuth';
 
 const drawerWidth = 240;
 
@@ -50,6 +51,7 @@ const NavButton = styled(Button)(() => ({
 function DrawerAppBar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const { auth } = useAuth();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -97,6 +99,32 @@ function DrawerAppBar(props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
+  const adminLinks = () => {
+    return (
+      <>
+        <NavLink href='/'>New Post</NavLink>
+        <NavLink href='/'>Log out</NavLink>
+      </>
+    );
+  };
+
+  const publicLinks = () => {
+    return (
+      <>
+        <NavLink href='/login'>Log In</NavLink>
+        <NavLink href='/register'>Sign Up</NavLink>
+      </>
+    );
+  };
+
+  const nonAdminLinks = () => {
+    return (
+      <>
+        <NavLink href='/register'>Log Out</NavLink>
+      </>
+    );
+  };
 
   return (
     <>
@@ -156,8 +184,11 @@ function DrawerAppBar(props) {
                 display: { xs: 'none', sm: 'block' },
               }}
             >
-              <NavLink href='/'>View Posts</NavLink>
-              <NavLink href='/'>New Post</NavLink>
+              {auth && auth.admin
+                ? adminLinks()
+                : auth && auth.username
+                ? nonAdminLinks()
+                : publicLinks()}
             </Box>
           </Toolbar>
         </Container>
