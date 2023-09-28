@@ -6,6 +6,7 @@ import TextAlign from '@tiptap/extension-text-align';
 import { Container } from '@mui/material';
 import PropTypes from 'prop-types';
 import './TipTap.css';
+import { useState } from 'react';
 
 const MenuBar = ({ editor }) => {
   if (!editor) {
@@ -170,7 +171,10 @@ const MenuBar = ({ editor }) => {
   );
 };
 
-export default function TipTap({ setData, data, setContent }) {
+export default function TipTap() {
+  const [data, setData] = useState('');
+  const [editorContent, setEditorContent] = useState('');
+
   const handleData = (e) => {
     if (e.target.name === 'title') {
       setData({ ...data, title: e.target.value });
@@ -219,6 +223,9 @@ export default function TipTap({ setData, data, setContent }) {
         — Mom
       </blockquote>
     `,
+    onUpdate({ editor }) {
+      setEditorContent(editor.getHTML());
+    },
   });
 
   return (
