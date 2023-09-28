@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from '/src/App';
 import ErrorPage from '../pages/ErrorPage';
 import Home from '../pages/Home';
-// import Post from '../pages/Post';
+import EditPost from '../pages/EditPost';
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -12,10 +12,10 @@ const Router = () => {
       errorElement: <ErrorPage />,
       children: [
         { index: true, element: <Home /> },
-        // {
-        //   path: '/posts/:slug',
-        //   element: <Post />,
-        // },
+        {
+          path: '/edit/:slug',
+          element: <EditPost />,
+        },
         { path: '*', element: <ErrorPage /> },
       ],
     },

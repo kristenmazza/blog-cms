@@ -8,6 +8,7 @@ export default function PostCard({
   title,
   published,
   publishedStatus,
+  slug,
 }) {
   return (
     <div className={styles.card}>
@@ -20,7 +21,7 @@ export default function PostCard({
           <span className={styles.published}>{publishedStatus}</span> •
           <span className={styles.cardDate}>{date}</span>
         </div>
-        <OptionButtons published={published} />
+        <OptionButtons published={published} slug={slug} />
       </div>
     </div>
   );

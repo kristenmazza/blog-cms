@@ -14,6 +14,7 @@ const StyledButton = styled(Button)(({ theme }) => {
   const backgroundColor = 'rgb(251, 251, 251)';
   return {
     backgroundColor,
+    width: '8rem',
     height: theme.spacing(3),
     border: '1px solid #999999',
     color: theme.palette.text.primary,
@@ -28,14 +29,14 @@ const StyledButton = styled(Button)(({ theme }) => {
   };
 });
 
-export default function IconLabelButtons({ published }) {
+export default function IconLabelButtons({ published, slug }) {
   return (
     <div className={styles.buttons}>
       <StyledButton
         variant='text'
         startIcon={<EditIcon />}
         component={Link}
-        to={'/edit'}
+        to={`/edit/${slug}`}
       >
         Edit
       </StyledButton>
@@ -60,4 +61,5 @@ export default function IconLabelButtons({ published }) {
 
 IconLabelButtons.propTypes = {
   published: PropTypes.bool,
+  slug: PropTypes.string,
 };

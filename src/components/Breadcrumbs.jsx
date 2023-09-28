@@ -82,5 +82,5 @@ export default function BasicMenu({ setFilter }) {
 }
 
 BasicMenu.propTypes = {
-  setFilter: PropTypes.string,
+  setFilter: PropTypes.func,
 };
