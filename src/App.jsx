@@ -7,6 +7,7 @@ import Unauthorized from './pages/Unauthorized';
 import Home from './pages/Home';
 import EditPost from './pages/EditPost';
 import ErrorPage from './pages/ErrorPage';
+import NewPost from './pages/NewPost';
 
 function App() {
   return (
@@ -17,10 +18,11 @@ function App() {
         <Route path='register' element={<Register />} />
         <Route path='unauthorized' element={<Unauthorized />} />
         {/* Protected routes */}
-        <Route element={<RequireAuth />}>
-          <Route path='/' element={<Home />} />
-          <Route path='/edit/:slug' element={<EditPost />} />
-        </Route>
+        {/* <Route element={<RequireAuth />}> */}
+        <Route path='/' element={<Home />} />
+        <Route path='/edit/:slug' element={<EditPost />} />
+        <Route path='/new' element={<NewPost />} />
+        {/* </Route> */}
         {/* Catch all */}
         <Route path='*' element={<ErrorPage />} />
       </Route>

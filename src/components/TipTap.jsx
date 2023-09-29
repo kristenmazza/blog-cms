@@ -3,10 +3,10 @@ import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import Highlight from '@tiptap/extension-highlight';
 import TextAlign from '@tiptap/extension-text-align';
+import Link from '@tiptap/extension-link';
 import { Container } from '@mui/material';
 import PropTypes from 'prop-types';
 import './TipTap.css';
-import { useState } from 'react';
 
 const MenuBar = ({ editor }) => {
   if (!editor) {
@@ -20,6 +20,26 @@ const MenuBar = ({ editor }) => {
     if (url) {
       editor.chain().focus().setImage({ src: url, alt: alt }).run();
     }
+  };
+
+  const setLink = () => {
+    const previousUrl = editor.getAttributes('link').href;
+    const url = window.prompt('URL', previousUrl);
+
+    // cancelled
+    if (url === null) {
+      return;
+    }
+
+    // empty
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink().run();
+
+      return;
+    }
+
+    // update link
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
   };
 
   return (
@@ -56,7 +76,7 @@ const MenuBar = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleHighlight().run()}
         className={editor.isActive('highlight') ? 'is-active' : ''}
       >
-        Highlight
+        highlight
       </button>
       <button
         onClick={() => editor.chain().focus().setTextAlign('left').run()}
@@ -154,7 +174,13 @@ const MenuBar = ({ editor }) => {
       <button onClick={() => editor.chain().focus().setHardBreak().run()}>
         hard break
       </button>
-      <button onClick={() => addImage()}>Image</button>
+      <button
+        onClick={() => setLink()}
+        className={editor.isActive('link') ? 'is-active' : ''}
+      >
+        link
+      </button>
+      <button onClick={() => addImage()}>image</button>
       <button
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!editor.can().chain().focus().undo().run()}
@@ -171,13 +197,15 @@ const MenuBar = ({ editor }) => {
   );
 };
 
-export default function TipTap() {
-  const [data, setData] = useState('');
-  const [editorContent, setEditorContent] = useState('');
-
-  const handleData = (e) => {
+export default function TipTap({
+  title,
+  setTitle,
+  editorContent,
+  setEditorContent,
+}) {
+  const handleTitleData = (e) => {
     if (e.target.name === 'title') {
-      setData({ ...data, title: e.target.value });
+      setTitle(e.target.value);
     }
   };
 
@@ -192,6 +220,7 @@ export default function TipTap() {
         types: ['heading', 'paragraph'],
       }),
       Highlight,
+      Link,
     ],
     content: `
       <h2>
@@ -235,7 +264,7 @@ export default function TipTap() {
           <input
             type='text'
             name='title'
-            onBlur={handleData}
+            onBlur={handleTitleData}
             placeholder='title here...'
             className='title-inp'
           />
