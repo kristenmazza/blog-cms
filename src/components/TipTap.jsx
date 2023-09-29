@@ -4,9 +4,10 @@ import Image from '@tiptap/extension-image';
 import Highlight from '@tiptap/extension-highlight';
 import TextAlign from '@tiptap/extension-text-align';
 import Link from '@tiptap/extension-link';
-import { Container } from '@mui/material';
+import { Checkbox, Container } from '@mui/material';
 import PropTypes from 'prop-types';
 import './TipTap.css';
+import { useState } from 'react';
 
 const MenuBar = ({ editor }) => {
   if (!editor) {
@@ -202,11 +203,17 @@ export default function TipTap({
   setTitle,
   editorContent,
   setEditorContent,
+  published,
+  setPublished,
 }) {
   const handleTitleData = (e) => {
     if (e.target.name === 'title') {
       setTitle(e.target.value);
     }
+  };
+
+  const handlePublishedState = (e) => {
+    setPublished(!published);
   };
 
   const editor = useEditor({
@@ -272,6 +279,12 @@ export default function TipTap({
         <MenuBar editor={editor} />
         <EditorContent editor={editor} className='content-editor' />
       </div>
+      <Checkbox
+        checked={published}
+        onChange={handlePublishedState}
+        inputProps={{ 'aria-label': 'controlled' }}
+      />
+      Publish on submit?
     </Container>
   );
 }

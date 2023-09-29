@@ -51,9 +51,12 @@ export default function SignIn() {
       console.log(JSON.stringify(response?.data));
       const accessToken = response?.data?.token;
       const admin = response?.data?.user.admin;
+
       setAuth({ username, password, admin, accessToken });
       setUsername('');
       setPassword('');
+
+      localStorage.setItem('token', `Bearer ${accessToken}`);
       navigate(from, { replace: true });
     } catch (err) {
       if (!err?.response) {

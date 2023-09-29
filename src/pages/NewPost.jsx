@@ -7,14 +7,21 @@ import axios from 'axios';
 export default function NewPost() {
   const [title, setTitle] = useState('');
   const [editorContent, setEditorContent] = useState('');
+  const [published, setPublished] = useState(false);
 
   const handleClick = async () => {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
     try {
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + `/posts`,
-        JSON.stringify({ title: title, content: editorContent }),
+        { title: title, content: editorContent, published: published },
+        config,
       );
-      console.log(response);
     } catch (err) {
       console.log(err);
     }
@@ -29,6 +36,8 @@ export default function NewPost() {
         setTitle={setTitle}
         editorContent={editorContent}
         setEditorContent={setEditorContent}
+        published={published}
+        setPublished={setPublished}
       />
       <Button
         onClick={handleClick}
