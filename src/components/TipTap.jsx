@@ -7,7 +7,7 @@ import Link from '@tiptap/extension-link';
 import { Checkbox, Container } from '@mui/material';
 import PropTypes from 'prop-types';
 import './TipTap.css';
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 const MenuBar = ({ editor }) => {
   if (!editor) {
@@ -205,6 +205,7 @@ export default function TipTap({
   setEditorContent,
   published,
   setPublished,
+  loading,
 }) {
   const handleTitleData = (e) => {
     if (e.target.name === 'title') {
@@ -212,7 +213,7 @@ export default function TipTap({
     }
   };
 
-  const handlePublishedState = (e) => {
+  const handlePublishedState = () => {
     setPublished(!published);
   };
 
@@ -229,40 +230,23 @@ export default function TipTap({
       Highlight,
       Link,
     ],
-    content: `
-      <h2>
-        Hi there,
-      </h2>
-      <p>
-        this is a <em>basic</em> example of <strong>tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
-      </p>
-      <ul>
-        <li>
-          That’s a bullet list with one …
-        </li>
-        <li>
-          … or two list items.
-        </li>
-      </ul>
-      <p>
-        Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
-      </p>
-      <pre><code class="language-css">body {
-  display: none;
-}</code></pre>
-      <p>
-        I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
-      </p>
-      <blockquote>
-        Wow, that’s amazing. Good work, boy! 👏
-        <br />
-        — Mom
-      </blockquote>
-    `,
+    content: editorContent,
     onUpdate({ editor }) {
       setEditorContent(editor.getHTML());
     },
   });
+
+  useEffect(() => {
+    // Ensure editorContent state is updated when loading of data is complete
+    if (!loading && editor) {
+      editor.commands.setContent(editorContent);
+    }
+  }, [editor, editorContent, loading]);
+
+  // Conditional rendering for loading content
+  if (loading) {
+    return <div>Loading editor content...</div>;
+  }
 
   return (
     <Container className='editor-container'>
@@ -271,9 +255,10 @@ export default function TipTap({
           <input
             type='text'
             name='title'
-            onBlur={handleTitleData}
+            onChange={handleTitleData}
             placeholder='title here...'
             className='title-inp'
+            value={title}
           />
         </div>
         <MenuBar editor={editor} />
@@ -297,4 +282,11 @@ TipTap.propTypes = {
   setData: PropTypes.func,
   data: PropTypes.string,
   setContent: PropTypes.func,
+  editorContent: PropTypes.string,
+  setEditorContent: PropTypes.func,
+  title: PropTypes.string,
+  setTitle: PropTypes.func,
+  published: PropTypes.bool,
+  setPublished: PropTypes.func,
+  loading: PropTypes.bool,
 };
