@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import EditPost from './pages/EditPost';
 import ErrorPage from './pages/ErrorPage';
 import NewPost from './pages/NewPost';
+import DeletePost from './pages/DeletePost';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         {/* <Route element={<RequireAuth />}> */}
         <Route path='/' element={<Home />} />
         <Route path='/edit/:slug' element={<EditPost />} />
+        <Route path='/delete/:slug' element={<DeletePost />} />
         <Route path='/new' element={<NewPost />} />
         {/* </Route> */}
         {/* Catch all */}

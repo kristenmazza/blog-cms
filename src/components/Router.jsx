@@ -5,6 +5,7 @@ import Home from '../pages/Home';
 import EditPost from '../pages/EditPost';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
+import DeletePost from '../pages/DeletePost';
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -17,6 +18,10 @@ const Router = () => {
         {
           path: '/edit/:slug',
           element: <EditPost />,
+        },
+        {
+          path: '/delete/:slug',
+          element: <DeletePost />,
         },
         {
           path: '/login',

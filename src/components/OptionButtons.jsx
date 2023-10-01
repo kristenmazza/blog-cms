@@ -52,7 +52,12 @@ export default function IconLabelButtons({ published, slug }) {
       <StyledButton variant='text' startIcon={<VisibilityIcon />}>
         View
       </StyledButton>
-      <StyledButton variant='text' startIcon={<DeleteIcon />}>
+      <StyledButton
+        variant='text'
+        startIcon={<DeleteIcon />}
+        component={Link}
+        to={`delete/${slug}`}
+      >
         Delete
       </StyledButton>
       {published ? (

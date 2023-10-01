@@ -1,19 +1,20 @@
 import { Button, Container, Toolbar } from '@mui/material';
-import Tiptap from '../components/TipTap';
+import styles from './DeletePost.module.css';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import styles from './EditPost.module.css';
+import { format } from 'date-fns';
 
-export default function EditPost() {
+export default function DeletePost() {
   const { slug } = useParams();
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const [title, setTitle] = useState('');
-  const [editorContent, setEditorContent] = useState('');
-  const [published, setPublished] = useState(false);
+  const [date, setDate] = useState('');
+
+  const [publishedStatus, setPublishedStatus] = useState(false);
 
   const navigate = useNavigate();
 
@@ -24,14 +25,22 @@ export default function EditPost() {
           import.meta.env.VITE_BACKEND_URL + `/posts/${slug}`,
         );
         setTitle(response.data.title);
-        setEditorContent(response.data.content);
-        setPublished(response.data.published);
+        if (response.data.published) {
+          setPublishedStatus('Published');
+        } else {
+          setPublishedStatus('Draft');
+        }
+        const formattedDate = format(
+          new Date(response.data.date),
+          'MMM dd, yyyy',
+        );
+
+        setDate(formattedDate);
         setError(null);
       } catch (err) {
         setError(err.message);
         setTitle('');
-        setEditorContent('');
-        setPublished(false);
+        setDate('');
       } finally {
         setLoading(false);
       }
@@ -39,7 +48,7 @@ export default function EditPost() {
     getPost();
   }, [slug]);
 
-  const handleClick = async () => {
+  const handleDeletePost = async () => {
     const token = localStorage.getItem('token');
     const config = {
       headers: {
@@ -47,9 +56,8 @@ export default function EditPost() {
       },
     };
     try {
-      const response = await axios.put(
+      const response = await axios.delete(
         import.meta.env.VITE_BACKEND_URL + `/posts/${slug}`,
-        { title: title, content: editorContent, published: published },
         config,
       );
     } catch (err) {
@@ -60,27 +68,34 @@ export default function EditPost() {
   };
 
   return (
-    <Container sx={{ display: 'flex', flexDirection: 'column' }} maxWidth='lg'>
+    <Container
+      component='main'
+      sx={{ display: 'flex', flexDirection: 'column' }}
+      maxWidth='xs'
+    >
       <Toolbar sx={{ height: '8rem' }} />
+      <h1 className={styles.heading}>
+        Are you sure you want to delete this post?
+      </h1>
       {error ? (
-        <p> An error was encountered: {error}</p>
+        <p>{error}</p>
+      ) : loading ? (
+        <p>Loading...</p>
       ) : (
         <>
-          <Tiptap
-            title={title}
-            setTitle={setTitle}
-            editorContent={editorContent}
-            setEditorContent={setEditorContent}
-            published={published}
-            setPublished={setPublished}
-            loading={loading}
-          />
+          <div className={styles.card}>
+            <div className={styles.cardBody}>
+              <h1 className={styles.cardTitle}>{title}</h1>
+              <p>{publishedStatus}</p>
+              <p>{date}</p>
+            </div>
+          </div>
           <Button
-            onClick={handleClick}
+            onClick={handleDeletePost}
             className={styles.containedBtn}
             variant='contained'
           >
-            Update Post
+            Delete Post
           </Button>
         </>
       )}
