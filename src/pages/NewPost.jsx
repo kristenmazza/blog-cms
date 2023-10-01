@@ -3,12 +3,14 @@ import Tiptap from '../components/TipTap';
 import styles from './NewPost.module.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function NewPost() {
   const [title, setTitle] = useState('');
   const [editorContent, setEditorContent] = useState('');
   const [published, setPublished] = useState(false);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const handleClick = async () => {
     const token = localStorage.getItem('token');
@@ -26,6 +28,7 @@ export default function NewPost() {
     } catch (err) {
       console.log(err);
     }
+    navigate('/');
   };
 
   useEffect(() => {

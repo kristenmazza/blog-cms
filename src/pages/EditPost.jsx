@@ -1,9 +1,9 @@
-import { Container, Toolbar } from '@mui/material';
+import { Button, Container, Toolbar } from '@mui/material';
 import Tiptap from '../components/TipTap';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-
+import styles from './EditPost.module.css';
 export default function EditPost() {
   const { slug } = useParams();
 
@@ -13,6 +13,8 @@ export default function EditPost() {
   const [title, setTitle] = useState('');
   const [editorContent, setEditorContent] = useState('');
   const [published, setPublished] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getPost = async () => {
@@ -36,21 +38,50 @@ export default function EditPost() {
     getPost();
   }, [slug]);
 
+  const handleClick = async () => {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    try {
+      const response = await axios.put(
+        import.meta.env.VITE_BACKEND_URL + `/posts/${slug}`,
+        { title: title, content: editorContent, published: published },
+        config,
+      );
+    } catch (err) {
+      console.log(err);
+    }
+
+    navigate('/');
+  };
+
   return (
-    <Container maxWidth='lg'>
+    <Container sx={{ display: 'flex', flexDirection: 'column' }} maxWidth='lg'>
       <Toolbar sx={{ height: '8rem' }} />
       {error ? (
         <p> An error was encountered: {error}</p>
       ) : (
-        <Tiptap
-          title={title}
-          setTitle={setTitle}
-          editorContent={editorContent}
-          setEditorContent={setEditorContent}
-          published={published}
-          setPulished={setPublished}
-          loading={loading}
-        />
+        <>
+          <Tiptap
+            title={title}
+            setTitle={setTitle}
+            editorContent={editorContent}
+            setEditorContent={setEditorContent}
+            published={published}
+            setPublished={setPublished}
+            loading={loading}
+          />
+          <Button
+            onClick={handleClick}
+            className={styles.containedBtn}
+            variant='contained'
+          >
+            Update Post
+          </Button>
+        </>
       )}
     </Container>
   );

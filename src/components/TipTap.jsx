@@ -213,10 +213,6 @@ export default function TipTap({
     }
   };
 
-  const handlePublishedState = () => {
-    setPublished(!published);
-  };
-
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -265,8 +261,8 @@ export default function TipTap({
         <EditorContent editor={editor} className='content-editor' />
       </div>
       <Checkbox
-        checked={published}
-        onChange={handlePublishedState}
+        defaultChecked={published}
+        onChange={() => setPublished(!published)}
         inputProps={{ 'aria-label': 'controlled' }}
       />
       Publish on submit?
