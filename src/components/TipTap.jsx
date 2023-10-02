@@ -227,7 +227,7 @@ export default function TipTap({
       Link,
     ],
     content: editorContent,
-    onUpdate({ editor }) {
+    onBlur({ editor }) {
       setEditorContent(editor.getHTML());
     },
   });
