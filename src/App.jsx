@@ -9,6 +9,7 @@ import EditPost from './pages/EditPost';
 import ErrorPage from './pages/ErrorPage';
 import NewPost from './pages/NewPost';
 import DeletePost from './pages/DeletePost';
+import ImageUpload from './pages/ImageUpload';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path='/edit/:slug' element={<EditPost />} />
         <Route path='/delete/:slug' element={<DeletePost />} />
         <Route path='/new' element={<NewPost />} />
+        <Route path='/:slug/image' element={<ImageUpload />} />
         {/* </Route> */}
         {/* Catch all */}
         <Route path='*' element={<ErrorPage />} />

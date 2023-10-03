@@ -60,7 +60,7 @@ export default function PostList() {
         <PostCard
           title={title}
           date={formattedDate}
-          src={uploaded_image}
+          src={uploaded_image || '/images/img-placeholder.jpg'}
           publishedStatus={publishedStatus}
           published={published}
           slug={slug}

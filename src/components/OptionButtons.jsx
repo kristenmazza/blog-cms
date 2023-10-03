@@ -3,7 +3,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import EditIcon from '@mui/icons-material/Edit';
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { emphasize } from '@mui/material';
@@ -45,12 +44,9 @@ export default function IconLabelButtons({ published, slug }) {
         variant='text'
         startIcon={<ImageIcon />}
         component={Link}
-        to={`/edit/${slug}`}
+        to={`/${slug}/image`}
       >
         New Image
-      </StyledButton>
-      <StyledButton variant='text' startIcon={<VisibilityIcon />}>
-        View
       </StyledButton>
       <StyledButton
         variant='text'
