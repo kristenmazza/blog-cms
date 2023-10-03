@@ -1,6 +1,6 @@
 import { Button, Container, Toolbar } from '@mui/material';
 import Tiptap from '../components/TipTap';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styles from './EditPost.module.css';
@@ -15,6 +15,7 @@ export default function EditPost() {
   const [editorContent, setEditorContent] = useState('');
   const [published, setPublished] = useState(false);
 
+  const [updateError, setUpdateError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,11 +53,31 @@ export default function EditPost() {
         { title: title, content: editorContent, published: published },
         config,
       );
+      setUpdateError('');
+      navigate('/');
     } catch (err) {
-      console.log(err);
+      setUpdateError(JSON.parse(err.response.request.response).errors);
     }
+  };
 
-    navigate('/');
+  // Removes error if one exists when title/editorContent changes
+  useEffect(() => {
+    setUpdateError('');
+  }, [title, editorContent]);
+
+  const displayErrors = () => {
+    const errorElements = updateError.map((err, index) => (
+      <p key={index}>{err.msg}</p>
+    ));
+
+    return (
+      <div
+        className={updateError ? styles.error : styles.offscreen}
+        aria-live='assertive'
+      >
+        {errorElements}
+      </div>
+    );
   };
 
   return (
@@ -75,6 +96,7 @@ export default function EditPost() {
             setPublished={setPublished}
             loading={loading}
           />
+          {updateError ? displayErrors() : ''}
           <Button
             onClick={handleClick}
             className={styles.containedBtn}

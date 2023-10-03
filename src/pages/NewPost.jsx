@@ -1,7 +1,7 @@
 import { Button, Container, Toolbar } from '@mui/material';
 import Tiptap from '../components/TipTap';
 import styles from './NewPost.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +10,8 @@ export default function NewPost() {
   const [editorContent, setEditorContent] = useState('');
   const [published, setPublished] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const errRef = useRef();
   const navigate = useNavigate();
 
   const handleClick = async () => {
@@ -25,15 +27,38 @@ export default function NewPost() {
         { title: title, content: editorContent, published: published },
         config,
       );
+      setError('');
+      navigate('/');
     } catch (err) {
-      console.log(err);
+      setError(JSON.parse(err.response.request.response).errors);
+      errRef.current.focus();
     }
-    navigate('/');
   };
 
   useEffect(() => {
     setLoading(false); // Simulate that content is loaded when the component mounts
   }, []);
+
+  // Removes error if one exists when title/editorContent changes
+  useEffect(() => {
+    setError('');
+  }, [title, editorContent]);
+
+  const displayErrors = () => {
+    const errorElements = error.map((err, index) => (
+      <p key={index}>{err.msg}</p>
+    ));
+
+    return (
+      <div
+        ref={errRef}
+        className={error ? styles.error : styles.offscreen}
+        aria-live='assertive'
+      >
+        {errorElements}
+      </div>
+    );
+  };
 
   return (
     <Container sx={{ display: 'flex', flexDirection: 'column' }} maxWidth='lg'>
@@ -51,7 +76,7 @@ export default function NewPost() {
             published={published}
             setPublished={setPublished}
           />
-
+          {error ? displayErrors() : ''}
           <Button
             onClick={handleClick}
             className={styles.containedBtn}
