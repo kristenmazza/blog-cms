@@ -3,6 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import EditIcon from '@mui/icons-material/Edit';
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
+import CommentIcon from '@mui/icons-material/Comment';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { emphasize } from '@mui/material';
@@ -131,6 +132,14 @@ export default function IconLabelButtons({ published, slug, posts, setPosts }) {
         to={`/${slug}/image`}
       >
         New Image
+      </StyledButton>
+      <StyledButton
+        variant='text'
+        startIcon={<CommentIcon />}
+        component={Link}
+        to={`/${slug}/comments`}
+      >
+        Comments
       </StyledButton>
       <StyledButton
         variant='text'
