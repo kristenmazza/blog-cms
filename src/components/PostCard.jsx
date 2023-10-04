@@ -9,6 +9,8 @@ export default function PostCard({
   published,
   publishedStatus,
   slug,
+  posts,
+  setPosts,
 }) {
   return (
     <div className={styles.card}>
@@ -21,7 +23,12 @@ export default function PostCard({
           <span className={styles.published}>{publishedStatus}</span> •
           <span className={styles.cardDate}>{date}</span>
         </div>
-        <OptionButtons published={published} slug={slug} />
+        <OptionButtons
+          published={published}
+          slug={slug}
+          posts={posts}
+          setPosts={setPosts}
+        />
       </div>
     </div>
   );
@@ -34,4 +41,6 @@ PostCard.propTypes = {
   slug: PropTypes.string,
   published: PropTypes.bool,
   publishedStatus: PropTypes.string,
+  posts: PropTypes.array,
+  setPosts: PropTypes.func,
 };

@@ -64,6 +64,8 @@ export default function PostList() {
           publishedStatus={publishedStatus}
           published={published}
           slug={slug}
+          posts={posts}
+          setPosts={setPosts}
         />
       </React.Fragment>
     );
