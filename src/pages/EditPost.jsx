@@ -1,6 +1,6 @@
 import { Button, Container, Toolbar } from '@mui/material';
 import Tiptap from '../components/TipTap';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styles from './EditPost.module.css';
@@ -50,7 +50,11 @@ export default function EditPost() {
     try {
       const response = await axios.put(
         import.meta.env.VITE_BACKEND_URL + `/posts/${slug}`,
-        { title: title, content: editorContent, published: published },
+        {
+          title: title,
+          content: editorContent,
+          published: published,
+        },
         config,
       );
       setUpdateError('');
