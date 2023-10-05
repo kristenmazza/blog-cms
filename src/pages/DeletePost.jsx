@@ -60,11 +60,10 @@ export default function DeletePost() {
         import.meta.env.VITE_BACKEND_URL + `/posts/${slug}`,
         config,
       );
+      navigate('/');
     } catch (err) {
       console.log(err);
     }
-
-    navigate('/');
   };
 
   return (
