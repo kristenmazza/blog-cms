@@ -5,9 +5,11 @@ const RequireAuth = () => {
   const { auth } = useAuth();
   const location = useLocation();
 
-  return auth?.admin ? (
+  console.log(`admin ` + auth?.user?.admin);
+
+  return auth?.user?.admin ? (
     <Outlet />
-  ) : auth?.username ? (
+  ) : auth?.user ? (
     <Navigate to='/unauthorized' state={{ from: location }} replace />
   ) : (
     <Navigate to='/login' state={{ from: location }} replace />

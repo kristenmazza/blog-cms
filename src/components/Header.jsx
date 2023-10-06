@@ -12,9 +12,8 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
+import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import useAuth from '../hooks/useAuth';
 
@@ -36,7 +35,7 @@ const NavLink = styled(Link)(() => ({
   marginLeft: '1.5rem',
 }));
 
-const NavButton = styled(Button)(() => ({
+const NavButton = styled(Link)(() => ({
   color: '#151515',
   textAlign: 'center',
   textTransform: 'Capitalize',
@@ -60,8 +59,8 @@ function DrawerAppBar(props) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant='h6' sx={{ my: 2 }}>
-        <Link
-          href='/'
+        <NavLink
+          to='/'
           underline='none'
           sx={{
             color: '#151515',
@@ -73,12 +72,12 @@ function DrawerAppBar(props) {
           }}
         >
           KM Blog
-        </Link>
+        </NavLink>
       </Typography>
       <Divider />
       <List>
         <ListItem disablePadding sx={{ justifyContent: 'center' }}>
-          <NavButton href='/'>
+          <NavButton to='/'>
             <ListItemText
               primaryTypographyProps={{ fontSize: '20px', fontWeight: '300' }}
               primary='View Posts'
@@ -86,7 +85,7 @@ function DrawerAppBar(props) {
           </NavButton>
         </ListItem>
         <ListItem disablePadding sx={{ justifyContent: 'center' }}>
-          <NavButton href='/'>
+          <NavButton to='/new'>
             <ListItemText
               primaryTypographyProps={{ fontSize: '20px', fontWeight: '300' }}
               primary='New Post'
@@ -103,8 +102,8 @@ function DrawerAppBar(props) {
   const adminLinks = () => {
     return (
       <>
-        <NavLink href='/'>New Post</NavLink>
-        <NavLink href='/'>Log out</NavLink>
+        <NavLink to='/new'>New Post</NavLink>
+        <NavLink to='/'>Log out</NavLink>
       </>
     );
   };
@@ -112,8 +111,8 @@ function DrawerAppBar(props) {
   const publicLinks = () => {
     return (
       <>
-        <NavLink href='/login'>Log In</NavLink>
-        <NavLink href='/register'>Sign Up</NavLink>
+        <NavLink to='/login'>Log In</NavLink>
+        <NavLink to='/register'>Sign Up</NavLink>
       </>
     );
   };
@@ -121,7 +120,7 @@ function DrawerAppBar(props) {
   const nonAdminLinks = () => {
     return (
       <>
-        <NavLink href='/register'>Log Out</NavLink>
+        <NavLink to='/register'>Log Out</NavLink>
       </>
     );
   };
@@ -164,8 +163,8 @@ function DrawerAppBar(props) {
                 display: { xs: 'none', sm: 'block' },
               }}
             >
-              <Link
-                href='/'
+              <NavLink
+                to='/'
                 underline='none'
                 sx={{
                   color: '#151515',
@@ -177,16 +176,16 @@ function DrawerAppBar(props) {
                 }}
               >
                 KM Blog
-              </Link>
+              </NavLink>
             </Typography>
             <Box
               sx={{
                 display: { xs: 'none', sm: 'block' },
               }}
             >
-              {auth && auth.admin
+              {auth?.user?.admin
                 ? adminLinks()
-                : auth && auth.username
+                : auth?.user
                 ? nonAdminLinks()
                 : publicLinks()}
             </Box>

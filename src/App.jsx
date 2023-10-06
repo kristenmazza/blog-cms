@@ -11,8 +11,24 @@ import NewPost from './pages/NewPost';
 import DeletePost from './pages/DeletePost';
 import ImageUpload from './pages/ImageUpload';
 import ManageComments from './pages/ManageComments';
+import { useEffect } from 'react';
+import useAuth from './hooks/useAuth';
 
 function App() {
+  const { setAuth } = useAuth();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    const storedToken = localStorage.getItem('token');
+    if (storedUser && storedToken) {
+      const foundUser = JSON.parse(storedUser);
+      const accessToken = storedToken.replace('Bearer', '');
+      setAuth({ user: foundUser, accessToken: accessToken });
+    }
+  }, []);
+
+  // console.log(`auth:`, auth);
+
   return (
     <Routes>
       <Route path='/' element={<Layout />}>
@@ -21,14 +37,14 @@ function App() {
         <Route path='register' element={<Register />} />
         <Route path='unauthorized' element={<Unauthorized />} />
         {/* Protected routes */}
-        {/* <Route element={<RequireAuth />}> */}
-        <Route path='/' element={<Home />} />
-        <Route path='/edit/:slug' element={<EditPost />} />
-        <Route path='/delete/:slug' element={<DeletePost />} />
-        <Route path='/new' element={<NewPost />} />
-        <Route path='/:slug/comments' element={<ManageComments />} />
-        <Route path='/:slug/image' element={<ImageUpload />} />
-        {/* </Route> */}
+        <Route element={<RequireAuth />}>
+          <Route path='/' element={<Home />} />
+          <Route path='/edit/:slug' element={<EditPost />} />
+          <Route path='/delete/:slug' element={<DeletePost />} />
+          <Route path='/new' element={<NewPost />} />
+          <Route path='/:slug/comments' element={<ManageComments />} />
+          <Route path='/:slug/image' element={<ImageUpload />} />
+        </Route>
         {/* Catch all */}
         <Route path='*' element={<ErrorPage />} />
       </Route>

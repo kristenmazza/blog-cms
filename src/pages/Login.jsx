@@ -16,7 +16,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './Login.module.css';
 
 export default function SignIn() {
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -48,15 +48,15 @@ export default function SignIn() {
           headers: { 'Content-Type': 'application/json' },
         },
       );
-      console.log(JSON.stringify(response?.data));
       const accessToken = response?.data?.token;
-      const admin = response?.data?.user.admin;
+      const user = response?.data?.user;
 
-      setAuth({ username, password, admin, accessToken });
+      setAuth({ user, accessToken });
       setUsername('');
       setPassword('');
 
       localStorage.setItem('token', `Bearer ${accessToken}`);
+      localStorage.setItem('user', JSON.stringify(user));
       navigate(from, { replace: true });
     } catch (err) {
       if (!err?.response) {
