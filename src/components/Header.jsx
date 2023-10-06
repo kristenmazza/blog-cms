@@ -50,7 +50,7 @@ const NavButton = styled(Link)(() => ({
 function DrawerAppBar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const { auth } = useAuth();
+  const { auth, setAuth } = useAuth();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -99,11 +99,16 @@ function DrawerAppBar(props) {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
+  const handleLogout = () => {
+    localStorage.clear();
+    setAuth({});
+  };
+
   const adminLinks = () => {
     return (
       <>
         <NavLink to='/new'>New Post</NavLink>
-        <NavLink to='/'>Log out</NavLink>
+        <NavLink onClick={handleLogout}>Log out</NavLink>
       </>
     );
   };
@@ -120,7 +125,7 @@ function DrawerAppBar(props) {
   const nonAdminLinks = () => {
     return (
       <>
-        <NavLink to='/register'>Log Out</NavLink>
+        <NavLink onClick={handleLogout}>Log Out</NavLink>
       </>
     );
   };
