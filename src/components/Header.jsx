@@ -56,6 +56,72 @@ function DrawerAppBar(props) {
     setMobileOpen((prevState) => !prevState);
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    setAuth({});
+  };
+
+  const adminButtons = () => {
+    return (
+      <>
+        <ListItem disablePadding sx={{ justifyContent: 'center' }}>
+          <NavButton to='/new'>
+            <ListItemText
+              primaryTypographyProps={{ fontSize: '20px', fontWeight: '300' }}
+              primary='New post'
+            />
+          </NavButton>
+        </ListItem>
+        <ListItem disablePadding sx={{ justifyContent: 'center' }}>
+          <NavButton onClick={handleLogout}>
+            <ListItemText
+              primaryTypographyProps={{ fontSize: '20px', fontWeight: '300' }}
+              primary='Log out'
+            />
+          </NavButton>
+        </ListItem>
+      </>
+    );
+  };
+
+  const publicButtons = () => {
+    return (
+      <>
+        <ListItem disablePadding sx={{ justifyContent: 'center' }}>
+          <NavButton to='/login'>
+            <ListItemText
+              primaryTypographyProps={{ fontSize: '20px', fontWeight: '300' }}
+              primary='Log In'
+            />
+          </NavButton>
+        </ListItem>
+        <ListItem disablePadding sx={{ justifyContent: 'center' }}>
+          <NavButton to='/register'>
+            <ListItemText
+              primaryTypographyProps={{ fontSize: '20px', fontWeight: '300' }}
+              primary='Sign Up'
+            />
+          </NavButton>
+        </ListItem>
+      </>
+    );
+  };
+
+  const nonAdminButtons = () => {
+    return (
+      <>
+        <ListItem disablePadding sx={{ justifyContent: 'center' }}>
+          <NavButton onClick={handleLogout}>
+            <ListItemText
+              primaryTypographyProps={{ fontSize: '20px', fontWeight: '300' }}
+              primary='Log out'
+            />
+          </NavButton>
+        </ListItem>
+      </>
+    );
+  };
+
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant='h6' sx={{ my: 2 }}>
@@ -76,33 +142,17 @@ function DrawerAppBar(props) {
       </Typography>
       <Divider />
       <List>
-        <ListItem disablePadding sx={{ justifyContent: 'center' }}>
-          <NavButton to='/'>
-            <ListItemText
-              primaryTypographyProps={{ fontSize: '20px', fontWeight: '300' }}
-              primary='View Posts'
-            />
-          </NavButton>
-        </ListItem>
-        <ListItem disablePadding sx={{ justifyContent: 'center' }}>
-          <NavButton to='/new'>
-            <ListItemText
-              primaryTypographyProps={{ fontSize: '20px', fontWeight: '300' }}
-              primary='New Post'
-            />
-          </NavButton>
-        </ListItem>
+        {auth?.user?.admin
+          ? adminButtons()
+          : auth?.user
+          ? nonAdminButtons()
+          : publicButtons()}
       </List>
     </Box>
   );
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
-
-  const handleLogout = () => {
-    localStorage.clear();
-    setAuth({});
-  };
 
   const adminLinks = () => {
     return (
