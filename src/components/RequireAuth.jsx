@@ -5,8 +5,6 @@ const RequireAuth = () => {
   const { auth } = useAuth();
   const location = useLocation();
 
-  console.log(`admin ` + auth?.user?.admin);
-
   return auth?.user?.admin ? (
     <Outlet />
   ) : auth?.user ? (

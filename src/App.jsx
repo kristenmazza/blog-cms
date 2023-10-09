@@ -11,11 +11,12 @@ import NewPost from './pages/NewPost';
 import DeletePost from './pages/DeletePost';
 import ImageUpload from './pages/ImageUpload';
 import ManageComments from './pages/ManageComments';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useAuth from './hooks/useAuth';
 
 function App() {
   const { setAuth } = useAuth();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -25,9 +26,13 @@ function App() {
       const accessToken = storedToken.replace('Bearer', '');
       setAuth({ user: foundUser, accessToken: accessToken });
     }
+    setLoading(false);
   }, []);
 
-  // console.log(`auth:`, auth);
+  // Prevents issue with redirecting to login page on page refresh
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Routes>
