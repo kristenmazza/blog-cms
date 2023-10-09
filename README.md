@@ -1,8 +1,26 @@
-# React + Vite
+# Blog CMS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The Blog CMS (content management system) is a site for authoring and editing blog posts as well as managing comments. It is designed to work seamlessly with the [Blog API](https://github.com/kristenmazza/blog-api) and the [Blog Client](https://github.com/kristenmazza/blog-client). This CMS provides a basic, user-friendly interface for administrators to manage blog content.
 
-Currently, two official plugins are available:
+See the blog live: https://blog.kristenmazza.dev/ :point_left:
+![Blog content management system](/public/images/blog-cms-full.png)
+![Blog wysiwyg](/public/images/blog-wysiwyg.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technologies Used
+
+- HTML, CSS, and JavaScript
+- React.js
+- Axios (for making HTTP requests to the Blog API)
+- Material-UI
+- React Router (for handling client-side routing)
+- TipTap (WYSIWYG)
+
+## Getting Started
+
+Follow these steps to set up the Blog CMS on your local machine:
+
+1. Install dependencies using `npm install`.
+
+2. Use `npm run dev` to start the development server. `npm run build` builds a production-ready bundle for deployment.
+
+3. Access the Blog CMS in your web browser through `localhost`.
