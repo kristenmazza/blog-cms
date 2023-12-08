@@ -82,8 +82,8 @@ export default function Register() {
     } catch (err) {
       if (!err?.response) {
         setErrMsg('No server response');
-      } else if (err.response?.status === 409) {
-        setErrMsg('Email is already registered');
+      } else if (err.response?.data?.errors) {
+        setErrMsg(err.response.data.errors[0].msg);
       } else {
         setErrMsg('Registration failed');
       }
@@ -211,7 +211,7 @@ export default function Register() {
               </Grid>
               <p
                 ref={errRef}
-                className={errMsg ? 'errmsg' : 'offscreen'}
+                className={errMsg ? styles.errmsg : styles.offscreen}
                 aria-live='assertive'
               >
                 {errMsg}
