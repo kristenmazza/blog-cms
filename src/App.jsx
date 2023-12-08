@@ -27,7 +27,7 @@ function App() {
       setAuth({ user: foundUser, accessToken: accessToken });
     }
     setLoading(false);
-  }, []);
+  }, [setAuth]);
 
   // Prevents issue with redirecting to login page on page refresh
   if (loading) {
