@@ -9,7 +9,7 @@ export default function NewPost() {
   const [title, setTitle] = useState('');
   const [editorContent, setEditorContent] = useState('');
   const [published, setPublished] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState([]);
   const errRef = useRef();
   const navigate = useNavigate();
 
@@ -21,22 +21,21 @@ export default function NewPost() {
       },
     };
     try {
-      const response = await axios.post(
+      await axios.post(
         import.meta.env.VITE_BACKEND_URL + `/posts`,
         { title: title, content: editorContent, published: published },
         config,
       );
-      setError('');
+      setError([]);
       navigate('/');
     } catch (err) {
-      setError(JSON.parse(err.response.request.response).errors);
+      setError(err.response.data.errors);
       errRef.current.focus();
     }
   };
 
-  // Removes error if one exists when title/editorContent changes
   useEffect(() => {
-    setError('');
+    setError([]);
   }, [title, editorContent]);
 
   const displayErrors = () => {
@@ -47,7 +46,7 @@ export default function NewPost() {
     return (
       <div
         ref={errRef}
-        className={error ? styles.error : styles.offscreen}
+        className={error.length > 0 ? styles.error : styles.offscreen}
         aria-live='assertive'
       >
         {errorElements}

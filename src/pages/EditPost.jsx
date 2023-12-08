@@ -48,7 +48,7 @@ export default function EditPost() {
       },
     };
     try {
-      const response = await axios.put(
+      await axios.put(
         import.meta.env.VITE_BACKEND_URL + `/posts/${slug}`,
         {
           title: title,
@@ -60,11 +60,10 @@ export default function EditPost() {
       setUpdateError('');
       navigate('/');
     } catch (err) {
-      setUpdateError(JSON.parse(err.response.request.response).errors);
+      setUpdateError(err.response.data.errors);
     }
   };
 
-  // Removes error if one exists when title/editorContent changes
   useEffect(() => {
     setUpdateError('');
   }, [title, editorContent]);
