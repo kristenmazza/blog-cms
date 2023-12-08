@@ -9,7 +9,6 @@ export default function NewPost() {
   const [title, setTitle] = useState('');
   const [editorContent, setEditorContent] = useState('');
   const [published, setPublished] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const errRef = useRef();
   const navigate = useNavigate();
@@ -34,10 +33,6 @@ export default function NewPost() {
       errRef.current.focus();
     }
   };
-
-  useEffect(() => {
-    setLoading(false); // Simulate that content is loaded when the component mounts
-  }, []);
 
   // Removes error if one exists when title/editorContent changes
   useEffect(() => {
@@ -64,28 +59,22 @@ export default function NewPost() {
     <Container sx={{ display: 'flex', flexDirection: 'column' }} maxWidth='lg'>
       <Toolbar sx={{ height: '8rem' }} />
       <h1>Create a New Post</h1>
-      {loading ? (
-        <div>Loading editor...</div>
-      ) : (
-        <>
-          <Tiptap
-            title={title}
-            setTitle={setTitle}
-            editorContent={editorContent}
-            setEditorContent={setEditorContent}
-            published={published}
-            setPublished={setPublished}
-          />
-          {error ? displayErrors() : ''}
-          <Button
-            onClick={handleClick}
-            className={styles.containedBtn}
-            variant='contained'
-          >
-            Create Post
-          </Button>
-        </>
-      )}
+      <Tiptap
+        title={title}
+        setTitle={setTitle}
+        editorContent={editorContent}
+        setEditorContent={setEditorContent}
+        published={published}
+        setPublished={setPublished}
+      />
+      {error ? displayErrors() : ''}
+      <Button
+        onClick={handleClick}
+        className={styles.containedBtn}
+        variant='contained'
+      >
+        Create Post
+      </Button>
     </Container>
   );
 }

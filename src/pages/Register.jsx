@@ -68,14 +68,13 @@ export default function Register() {
       return;
     }
     try {
-      const response = await axios.post(
+      await axios.post(
         import.meta.env.VITE_BACKEND_URL + '/auth/register',
-        JSON.stringify({ username, password }),
+        { username, password },
         {
           headers: { 'Content-Type': 'application/json' },
         },
       );
-      console.log(response.data);
       setSuccess(true);
       setUsername('');
       setPassword('');

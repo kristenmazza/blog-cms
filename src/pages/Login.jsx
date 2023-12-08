@@ -16,7 +16,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './Login.module.css';
 
 export default function SignIn() {
-  const { auth, setAuth } = useAuth();
+  const { setAuth } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -43,7 +43,7 @@ export default function SignIn() {
     try {
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + `/auth/login`,
-        JSON.stringify({ username, password }),
+        { username, password },
         {
           headers: { 'Content-Type': 'application/json' },
         },
