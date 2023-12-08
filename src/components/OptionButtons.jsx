@@ -10,7 +10,7 @@ import { emphasize } from '@mui/material';
 import styles from './OptionButtons.module.css';
 import { Link } from 'react-router-dom';
 import ImageIcon from '@mui/icons-material/Image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
 const StyledButton = styled(Button)(({ theme }) => {
@@ -33,54 +33,24 @@ const StyledButton = styled(Button)(({ theme }) => {
 });
 
 export default function IconLabelButtons({ published, slug, posts, setPosts }) {
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const [title, setTitle] = useState('');
-  const [editorContent, setEditorContent] = useState('');
-  const [publishedStatus, setPublishedStatus] = useState('');
-
   const [updateLoading, setUpdateLoading] = useState(false);
 
-  useEffect(() => {
-    const getPost = async () => {
-      try {
-        const response = await axios.get(
-          import.meta.env.VITE_BACKEND_URL + `/posts/${slug}`,
-        );
-        setTitle(response.data.title);
-        setEditorContent(response.data.content);
-        setPublishedStatus(response.data.published);
-        setError(null);
-      } catch (err) {
-        setError(err.message);
-        console.log(error);
-        setTitle('');
-        setEditorContent('');
-        setPublishedStatus(published);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getPost();
-  }, [slug, published, error]);
-
   const handleClick = async () => {
-    const updatedPublishedStatus = !publishedStatus;
+    const updatedPublishedStatus = !published;
 
-    const newPostList = posts.map((post) => {
-      if (post.slug === slug) {
-        const updatedPost = {
-          ...post,
-          published: updatedPublishedStatus,
-        };
-        return updatedPost;
-      }
-      return post;
-    });
+    try {
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.slug === slug
+            ? { ...post, published: updatedPublishedStatus }
+            : post,
+        ),
+      );
 
-    setPosts(newPostList);
-    updatePost(updatedPublishedStatus);
+      await updatePost(updatedPublishedStatus);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const updatePost = async (updatedPublishedStatus) => {
@@ -98,18 +68,19 @@ export default function IconLabelButtons({ published, slug, posts, setPosts }) {
     };
 
     try {
-      const response = await axios.put(
+      const postToUpdate = posts.find((post) => post.slug === slug);
+
+      await axios.put(
         import.meta.env.VITE_BACKEND_URL + `/posts/${slug}`,
         {
-          title: title,
-          content: editorContent,
+          title: postToUpdate.title,
+          content: postToUpdate.content,
           published: updatedPublishedStatus,
         },
         config,
       );
-      setError('');
     } catch (err) {
-      setError(JSON.parse(err.response.request.response).errors);
+      console.error(err);
     } finally {
       setUpdateLoading(false);
     }
