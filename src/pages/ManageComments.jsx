@@ -36,9 +36,10 @@ export default function ManageComments() {
       }
     };
     getComments();
-  }, [slug, comments]);
+  });
 
   const handleDeleteComment = async (commentId) => {
+    console.log(commentId);
     const token = localStorage.getItem('token');
     const config = {
       headers: {
