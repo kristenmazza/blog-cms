@@ -39,7 +39,6 @@ export default function ManageComments() {
   });
 
   const handleDeleteComment = async (commentId) => {
-    console.log(commentId);
     const token = localStorage.getItem('token');
     const config = {
       headers: {
@@ -53,7 +52,7 @@ export default function ManageComments() {
         config,
       );
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
