@@ -13,6 +13,7 @@ export default function PostList() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState(null);
+  const [filteredPosts, setFilteredPosts] = useState([]);
 
   useEffect(() => {
     const getPosts = async () => {
@@ -32,16 +33,17 @@ export default function PostList() {
     getPosts();
   }, []);
 
-  // Filter posts based on filter option selected
-  let filteredPosts;
-
-  if (filter === 'published') {
-    filteredPosts = posts.filter((post) => post.published === true);
-  } else if (filter === 'drafts') {
-    filteredPosts = posts.filter((post) => post.published === false);
-  } else {
-    filteredPosts = posts;
-  }
+  useEffect(() => {
+    if (filter === 'published') {
+      const publishedPosts = posts.filter((post) => post.published === true);
+      setFilteredPosts(publishedPosts);
+    } else if (filter === 'drafts') {
+      const draftPosts = posts.filter((post) => post.published === false);
+      setFilteredPosts(draftPosts);
+    } else {
+      setFilteredPosts(posts);
+    }
+  }, [filter, posts]);
 
   const postCards = filteredPosts.map((post) => {
     if (error) return <p> An error was encountered.</p>;
