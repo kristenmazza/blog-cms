@@ -134,7 +134,7 @@ export default function Register() {
                     id='email'
                     label='Email Address'
                     name='email'
-                    ref={userRef}
+                    inputRef={userRef}
                     autoComplete='off'
                     onChange={(e) => setUsername(e.target.value)}
                     aria-invalid={validUsername ? 'false' : 'true'}

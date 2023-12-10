@@ -93,7 +93,7 @@ export default function SignIn() {
             margin='normal'
             required
             fullWidth
-            ref={userRef}
+            inputRef={userRef}
             id='email'
             label='Email Address'
             name='email'
